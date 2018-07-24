@@ -1,9 +1,13 @@
 # SpringBoot项目
 1. 技术选型
 > 数据库：mysql
+
 > 缓存：redis
+
 > 消息队列： rabbitMQ
+
 > 后端框架： SSM
+
 > 前端 ： html css jquery ajax bootstrap
 
 2. 使用SpringBoot简化配置，快速开发
