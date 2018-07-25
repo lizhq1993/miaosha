@@ -2,6 +2,7 @@ package com.lzhq.miaosha.service;
 
 import com.lzhq.miaosha.dao.MiaoshaUserDao;
 import com.lzhq.miaosha.domain.MiaoshaUser;
+import com.lzhq.miaosha.domain.User;
 import com.lzhq.miaosha.exception.GlobalException;
 import com.lzhq.miaosha.redis.MiaoshaUserKey;
 import com.lzhq.miaosha.redis.RedisService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @Service
 public class MiaoshaUserService {
@@ -107,6 +109,25 @@ public class MiaoshaUserService {
         //生成cookie
         String token = UUIDUtil.uuid();
         addCookie(response, token, user);
+        return true;
+    }
+
+    public boolean register(MiaoshaUser user) {
+        if(user == null) {
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
+        }
+
+        // 判断用户是否被注册
+        Long id = user.getId();
+        MiaoshaUser isExist = miaoshaUserDao.getById(id);
+        if(isExist != null) {
+            throw new GlobalException(CodeMsg.USER_EXIST);
+        }
+
+        user.setRegisterDate(new Date());
+        String dbPass = MD5Util.formPassToDBPass(user.getPassword(), "1a2b3c4d");
+        user.setPassword(dbPass);
+        miaoshaUserDao.addUser(user);
         return true;
     }
 
