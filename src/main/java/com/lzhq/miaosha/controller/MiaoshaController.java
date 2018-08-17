@@ -145,11 +145,13 @@ public class MiaoshaController implements InitializingBean {
         }
 
         // 预减库存
-        long stock = redisService.decr(GoodsKey.getMiaoshaGoodsStock, ""+goodsId);
+        // long stock = redisService.decr(GoodsKey.getMiaoshaGoodsStock, ""+goodsId);
+        long stock = redisService.get(GoodsKey.getMiaoshaGoodsStock, ""+goodsId, Integer.class);
         if(stock < 0) {
             localOverMap.put(goodsId, true);
             return Result.error(CodeMsg.MIAO_SHA_OVER);
         }
+        redisService.decr(GoodsKey.getMiaoshaGoodsStock, ""+goodsId);
 
         // 请求入队
         MiaoshaMessage mm = new MiaoshaMessage();

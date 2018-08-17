@@ -34,4 +34,15 @@ public class LoginController {
         miaoshaUserService.login(response,loginVo);
         return Result.success("登陆成功");
     }
+
+    @RequestMapping("/text_login")
+    @ResponseBody
+    public Result<Integer> doLogin(HttpServletResponse response, String mobile, String password, int num) {
+        LoginVo loginVo = new LoginVo();
+        loginVo.setMobile(mobile);
+        loginVo.setPassword(password);
+        log.info(loginVo.toString());
+        miaoshaUserService.login(response,loginVo);
+        return Result.success(num);
+    }
 }
