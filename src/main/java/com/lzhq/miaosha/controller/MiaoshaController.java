@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
 @RequestMapping("/miaosha")
@@ -49,7 +50,7 @@ public class MiaoshaController implements InitializingBean {
     @Autowired
     private MQSender sender;
 
-    private Map<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
+    private ConcurrentHashMap<Long, Boolean> localOverMap = new ConcurrentHashMap<Long, Boolean>();
 
     /**
      * 系统初始化，将商品库存数量加载到redis缓存中
